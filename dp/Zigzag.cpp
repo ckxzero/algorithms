@@ -1,59 +1,64 @@
+/*
+  Given a sequence of nonnegative numbers, find the longest zigzag subsequence.
+  A zigzag sequence is one where a[i] < a[i+1] > a[i+2] < a[i+3] or vice versa.
+ */
+
 #include <iostream>
 using namespace std;
 
-//my node
-struct node{ 
-  int key;
-  int posNeg; //-1=neg, 1=pos, 0=undetermined
-};
+int N;
+unsigned long long a[1000009]; //holds inputs
+unsigned long long memo[1000009]; //saves values for dp[i]
+unsigned long long longest[1000009];
+int b[1000009]; //-1 = neg, 0 = undetermined, 1 = pos
+int dp[1000009]; //holds the longest zigzag subsequence for any dp[i]
 
-//I was thinking of using index 0 as a special case
-//but turns out I didn't need to
-//I didn't want to change my code so I just left the arrays starting at 1
-node a[1009]; //a begins at 1             
-int dp[1009]; //dp begins at 1
-              //dp holds the longest zigzag subsequent at any given index
-
-int main() {
-  int n; //size of list of numbers
-  cin>>n;
-  for(int i=1; i<=n; ++i){
-    cin>>a[i].key;
+int main(){
+  cin >> N;
+  for(int i = 0; i < N; ++i){
+    cin >> a[i];
+    dp[i] = 1; //each number is at least its longest subsequence
   }
 
-  dp[1]=1; //base case
-  a[1].posNeg=0; //base case
-  for(int i=2; i<=n; ++i){
-    //look at previously determined subproblems
-    //and take the max of those values
-    for(int j=1; j<i; ++j){
-      if(a[j].posNeg==0){
-	if(a[i].key-a[j].key>0){
-	  dp[i]=dp[j]+1;
-	  a[i].posNeg=1;
-	}else if(a[i].key-a[j].key<0){
-	  dp[i]=dp[j]+1;
-	  a[i].posNeg=-1;
-	}else{
-	  dp[i]=dp[j];
-	  a[i].posNeg=0;
-	}
-      }else if(a[i].key>a[j].key && a[j].posNeg==-1){
-	dp[i]=max(dp[i],1+dp[j]);
-	a[i].posNeg=1;
-      }else if(a[i].key<a[i-1].key && a[i-1].posNeg==1){
-	dp[i]=max(dp[i],1+dp[j]);
-	a[i].posNeg=-1;
+  b[0] = 0; //base case
+  for(int i = 1; i < N; ++i){
+    //looks at previously solved subproblems and take max
+    for(int j = 0; j < i; ++j){
+      if(a[i] > a[j] && dp[i] < dp[j] + 1 && (b[j] == -1 || b[j] == 0)){
+	dp[i] = dp[j] + 1;
+	b[i] = 1;
+	memo[i] = j;
+      }else if(a[i] < a[j] && dp[i] < dp[j] + 1 && (b[j] == 1 || b[j] == 0)){
+	dp[i] = dp[j] + 1;
+	b[i] = -1;
+	memo[i] = j;
       }
-    }//j
-  }//i
-  
-  int max=0;
-  max=dp[0];
-  for(int i=1; i<=n; ++i){
-    if(dp[i]>max){
-      max=dp[i];
     }
   }
-  cout<<max<<endl;
-}
+
+  //search for max dp[i]
+  int max = dp[0];
+  int j = 0;
+  for(int i = 0; i < N; ++i){
+    if(dp[i]>max){
+      max = dp[i];
+      j = i;
+    }
+  }
+  cout << max << endl;
+  
+  //finding longest zigzag subsequence
+  int i = max - 1;
+  while (j != memo[j]){
+    longest[i] = a[j];
+    --i;
+    j = memo[j];
+  }
+  longest[0] = a[j];
+
+  for(int i = 0; i < max - 1; ++i){
+    cout << longest[i] << " " ; 
+  }
+  cout << longest[max-1] << endl;
+
+}//end main
