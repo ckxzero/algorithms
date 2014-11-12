@@ -9,31 +9,43 @@
 
 #include <iostream>
 using namespace std;
+typedef unsigned long long LL;
 
-long long i, j;
-long long N;
-long long dp[100009], a[100009];
+LL N;
+LL a[100009];
+int dp[1000009]; //holds longest subsequence for any dp[i]
+int memo[1000009]; //remembers the values of longest dp[i]
 
-int main() {
+int main(){
     cin >> N;
-    for (i = 0; i < N; ++i) {
+    for (int i = 0; i < N; ++i){
       cin >> a[i];
+      dp[i] = 1; //each item is at least its longest subsequence
     }
     
-    dp[0] = 1;
-    for (i = 1; i < N; ++i) {
-      for (j = 0; j < i; ++j) {
-	if(a[i] > a[j]) {
-	  dp[i] = max(dp[i], dp[j]+1);
+    memo[0] = 0; 
+    for (int i = 1; i < N; ++i){
+      for (int j = 0; j < i; ++j){
+	if(a[i] > a[j] && dp[i] < dp[j] + 1){
+	  dp[i] = dp[j] + 1;
+	  memo[i] = j;
 	}
       }
     }
   
     int max = dp[0];
-    for(i = 0; i < N; ++i) {
+    int j = 0;
+    for(int i = 0; i < N; ++i) {
       if(dp[i] > max) {
 	max = dp[i];
+	j = i;
       }
     }
+
     cout << max << endl;
+    while(memo[j] != j){ //prints in reverse order
+      cout << a[j] << " ";
+      j = memo[j];
+    }
+    cout << a[j] << endl;
 }//end main

@@ -5,8 +5,7 @@ using namespace std;
 template<class T> int partition(T* a, int l, int r){
   T temp;
   T p = a[r]; //pivot
-  int i, j;
-  for(i = l, j = l; i < r; ++i){
+  for(int i = l, int j = l; i < r; ++i){
     if(a[i] < p){
       temp = a[i];
       a[i] = a[j];
@@ -45,10 +44,10 @@ template<class T> void insertion(T* a, int N){
 }//end insertion
 
 template<class T> void print(T* a, int N){
-  for(int i = 0; i < N; ++i){
+  for(int i = 0; i < N-1; ++i){
     cout << a[i] << " ";
   }
-  cout << endl;
+  cout << a[N-1] << endl;
 }//end print
 
 int main(){

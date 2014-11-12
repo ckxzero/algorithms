@@ -11,7 +11,7 @@ public class Sorting{
 	int[] b = new int[a.length];
 	int[] c = new int[a.length];
 	
-    }
+    }//end counting
 
     public static <T extends Comparable<T>> void quick(T[] a, int l, int r){
 	if(l < r){

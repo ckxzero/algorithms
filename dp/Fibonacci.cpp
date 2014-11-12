@@ -1,25 +1,18 @@
 #include <iostream>
 using namespace std;
+typedef unsigned long long LL;
+
+LL N;
+LL dp[1000009];
 
 int main() {
-  long long target, i, prev;
-  long long dp[100009];
-  
+  cin >> N;
+
   dp[0] = 0; // sometimes 1 depending on definition
   dp[1] = 1;
-  prev = 1;  
+  for (i = 2; i <= N; ++i) {
+    dp[i] = dp[i-1] + dp[i-2];
+  }
 
-  cin >> target;
-  do {
-    for (i = prev+1; i <= target; ++i) {
-      dp[i] = dp[i-1] + dp[i-2];
-    }
-
-    if (target > prev) prev = target;
- 
-    cout << dp[target] << endl;
-
-    cin >> target;
-
-  } while (target != -1);
-}
+  cout << dp[N] << endl;
+}//end main

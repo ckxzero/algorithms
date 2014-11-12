@@ -1,15 +1,19 @@
 /*
+  Chris Nguyen 
+  11/11/2014
+
   Given a sequence of nonnegative numbers, find the longest zigzag subsequence.
   A zigzag sequence is one where a[i] < a[i+1] > a[i+2] < a[i+3] or vice versa.
  */
 
 #include <iostream>
 using namespace std;
+typedef unsigned long long LL;
 
 int N;
-unsigned long long a[1000009]; //holds inputs
-unsigned long long memo[1000009]; //saves values for dp[i]
-unsigned long long longest[1000009];
+LL a[1000009]; //holds inputs
+LL memo[1000009]; //saves values for dp[i]
+LL longest[1000009];
 int b[1000009]; //-1 = neg, 0 = undetermined, 1 = pos
 int dp[1000009]; //holds the longest zigzag subsequence for any dp[i]
 
@@ -60,5 +64,4 @@ int main(){
     cout << longest[i] << " " ; 
   }
   cout << longest[max-1] << endl;
-
 }//end main
